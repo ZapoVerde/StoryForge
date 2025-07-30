@@ -1,0 +1,29 @@
+[
+  {
+    "id": "forest_start",
+    "title": "Awakening in the Forest",
+    "description": "You awaken in a misty @clearing with your companion #fox nearby.",
+    "prompt": "You blink awake beneath the fog-drenched canopy. #fox kneels beside you, sharpening a blade. The wind carries the scent of rain and something darker. Shapes shift in the distance, deep in the @clearing.",
+    "worldStateInit": "{\n  \"locations\": {\n    \"clearing\": {\n      \"name\": \"Mossy Clearing\",\n      \"tag\": \"@clearing\",\n      \"weather\": \"fog\",\n      \"time\": \"dawn\"\n    }\n  },\n  \"npcs\": {\n    \"fox\": {\n      \"name\": \"Fox\",\n      \"tag\": \"#fox\",\n      \"role\": \"companion\",\n      \"mood\": \"alert\",\n      \"trust\": 3\n    }\n  },\n  \"player\": {\n    \"you\": {\n      \"name\": \"You\",\n      \"tag\": \"#you\",\n      \"hp\": 100,\n      \"gold\": 10,\n      \"background\": \"drifter\"\n    }\n  },\n  \"world\": {\n    \"location\": \"@clearing\"\n  }\n}",
+    "aiSettings": {
+      "temperature": 0.7,
+      "topP": 1.0,
+      "maxTokens": 2048,
+      "presencePenalty": 0.0,
+      "frequencyPenalty": 0.0
+    },
+    "helperAiSettings": {
+      "temperature": 0.7,
+      "topP": 1.0,
+      "maxTokens": 1024,
+      "presencePenalty": 0.0,
+      "frequencyPenalty": 0.0
+    },
+    "emitSkeleton": "",
+    "gameRules": "",
+    "tags": [],
+    "isExample": true,
+    "functionDefs": ""
+  }
+
+]
