@@ -14,11 +14,12 @@ import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.POST
 import java.util.concurrent.TimeUnit
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import okhttp3.MediaType.Companion.toMediaType
 
 // --- Retrofit API Definition ---
 internal interface AINarratorApiService {
@@ -189,10 +190,12 @@ class AINarrator private constructor(
                 })
                 .build()
 
+            val json = Json { ignoreUnknownKeys = true }
+
             val retrofit = Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
                 .build()
 
             return AINarrator(

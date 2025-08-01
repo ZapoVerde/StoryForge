@@ -72,6 +72,10 @@ android {
 dependencies {
     implementation("com.google.accompanist:accompanist-pager:0.36.0")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.36.0")
+    // Retrofit + Kotlinx Serialization Converter
+    implementation("com.squareup.retrofit2:converter-kotlinx-serialization:3.0.0")
+// If not already present
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 
 
     implementation("androidx.compose.ui:ui:1.8.3") // or newer
@@ -90,7 +94,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
     // Networking (Add these one group at a time)
     implementation("com.squareup.retrofit2:retrofit:2.11.0")                // Core Retrofit
-    implementation("com.squareup.retrofit2:converter-gson:2.11.0")          // JSON parsing
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")            // HTTP client
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14") // Debugging
 
