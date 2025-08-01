@@ -70,6 +70,10 @@ android {
 }
 
 dependencies {
+    implementation("androidx.room:room-runtime:2.7.2")
+    annotationProcessor("androidx.room:room-compiler:2.7.2")
+    implementation("androidx.datastore:datastore-preferences:1.1.7")
+    implementation("androidx.security:security-crypto:1.1.0")
     implementation("com.google.accompanist:accompanist-pager:0.36.0")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.36.0")
     // Retrofit + Kotlinx Serialization Converter
