@@ -23,9 +23,17 @@ fun LogViewerScreen(
 ) {
     val entries by viewModel.turnLogEntries.collectAsStateWithLifecycle()
     val selectedModes by viewModel.selectedLogViews.collectAsStateWithLifecycle()
-    val pagerState = rememberPagerState(initialPage = 0, pageCount = { selectedModes.size })
-    val coroutineScope = rememberCoroutineScope()
 
+    // 🔁 Infinite scroll setup
+    val fakePageCount = if (selectedModes.isEmpty()) 1 else Int.MAX_VALUE
+    val initialPage = if (selectedModes.isEmpty()) 0 else Int.MAX_VALUE / 2
+
+    val pagerState = rememberPagerState(
+        initialPage = initialPage,
+        pageCount = { fakePageCount }
+    )
+
+    val coroutineScope = rememberCoroutineScope()
     var dropdownExpanded by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
@@ -34,9 +42,10 @@ fun LogViewerScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            val currentTurn = entries.getOrNull(pagerState.currentPage)?.turnNumber ?: pagerState.currentPage
+            // 🔢 Safe index mapping for infinite scroll
+            val actualIndex = if (selectedModes.isEmpty()) 0 else pagerState.currentPage % selectedModes.size
+            val currentTurn = entries.getOrNull(actualIndex)?.turnNumber ?: actualIndex
             Text("Log Review", style = MaterialTheme.typography.headlineSmall)
-
 
             TextButton(onClick = onNavToggle) { Text("Menu") }
         }
@@ -81,10 +90,13 @@ fun LogViewerScreen(
 
         Spacer(Modifier.height(12.dp))
 
-        // Centered mode name
+        // 🛡️ Safe display of current mode name with bounds check
         if (selectedModes.isNotEmpty()) {
+            val actualIndex = pagerState.currentPage % selectedModes.size
+            val currentModeName = selectedModes.getOrNull(actualIndex)?.name ?: "None"
+
             Text(
-                text = "←  ${selectedModes[pagerState.currentPage].name}  →",
+                text = "←  $currentModeName  →",
                 modifier = Modifier.fillMaxWidth(),
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center
@@ -93,9 +105,14 @@ fun LogViewerScreen(
             Spacer(Modifier.height(8.dp))
         }
 
-        // Carousel
-        HorizontalPager(state = pagerState, modifier = Modifier.fillMaxSize()) { page ->
-            val mode = selectedModes.getOrNull(page) ?: return@HorizontalPager
+        // 🔄 Infinite carousel with bounds-safe content
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.fillMaxSize()
+        ) { page ->
+            // 🔢 Map fake page to actual index
+            val actualIndex = if (selectedModes.isEmpty()) 0 else page % selectedModes.size
+            val mode = selectedModes.getOrNull(actualIndex) ?: return@HorizontalPager
 
             LazyColumn(modifier = Modifier.fillMaxSize().padding(vertical = 12.dp)) {
                 items(entries) { entry ->
